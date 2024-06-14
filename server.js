@@ -5,6 +5,7 @@ const { XMLParser } = require('fast-xml-parser');
 const { fetch, setGlobalDispatcher, Agent } = require('undici');
 // const { launchBrowser, generateRecaptchaToken } = require('./recaptcha')
 const { connect, getSocketResponse } = require('./socket');
+const servers_file = require('./servers.json');
 
 setGlobalDispatcher(new Agent({connect: {timeout: 60_000}}));
 
@@ -12,12 +13,10 @@ const PORT = process.env.PORT ?? 3000;
 const servers = {};
 
 async function get_sockets() {
-    let servers_file = await fetch("https://empire-html5.goodgamestudios.com/config/network/1.xml");
-    servers_file = new XMLParser().parse(await servers_file.text());
     // let puppeteer = await launchBrowser();
-    for (instance of servers_file.network.instances.instance) {
-        if (instance.zone != "EmpireEx_23" && !(instance.zone in servers)) {
-            servers[instance.zone] = {url: `wss://${instance.server}`, reconnect: true, messages: [], responses: []};
+    for (instance of servers_file.instances.instance) {
+        if (!(instance.zone in servers)) {
+            servers[instance.zone] = {url: `ws://${instance.server}`, reconnect: true, messages: [], responses: []};
             connect(servers, instance.zone);
         }
     }
