@@ -40,7 +40,7 @@ function connect(servers, header) {
     socket.addEventListener('open', (event) => {
         console.log(`### socket ${header} connected ###`)
         socket.send(`<msg t='sys'><body action='login' r='0'><login z='${header}'><nick><![CDATA[]]></nick><pword><![CDATA[1065004%fr%0]]></pword></login></body></msg>`);
-        socket.send(`%xt%${header}%lli%1%{"CONM":175,"RTM":24,"ID":0,"PL":1,"NOM":"${NOM_UTILISATEUR}","PW":"${MOT_DE_PASSE}","LT":null,"LANG":"fr","DID":"0","AID":"1674256959939529708","KID":"","REF":"https://empire.goodgamestudios.com","GCI":"","SID":9,"PLFID":1}%`);
+        socket.send(`%xt%${header}%core_lga%1%{"NM": "${NOM_UTILISATEUR}", "PW": "${MOT_DE_PASSE}", "L": "fr", "AID": "1674256959939529708", "DID": 5, "PLFID": "3", "ADID": "null", "AFUID": "appsFlyerUID", "IDFV": "null"}%`);
     });
 
     socket.addEventListener('message', async (event) => {
@@ -50,19 +50,19 @@ function connect(servers, header) {
             response.content = JSON.parse(response.content ?? "{}");
         }
         catch {}
-        if (response.command == "lli") {
-            if (response.return_code == "0") {
+        if (response.command == "core_lga") {
+            if (response.return_code == "10005") {
                 ping_socket(socket, header);
             }
-            else if (response.return_code == "21") {
-                socket.send(`%xt%${header}%lre%1%{"DID":0,"CONM":515,"RTM":60,"campainPId":-1,"campainCr":-1,"campainLP":-1,"adID":-1,"timeZone":14,"username":"${NOM_UTILISATEUR}","email":null,"password":"${MOT_DE_PASSE}","accountId":"1681390746855129824","ggsLanguageCode":"fr","referrer":"https://empire.goodgamestudios.com","distributorId":0,"connectionTime":515,"roundTripTime":60,"campaignVars":";https://empire.goodgamestudios.com;;;;;;-1;-1;;1681390746855129824;0;;;;;","campaignVars_adid":"-1","campaignVars_lp":"-1","campaignVars_creative":"-1","campaignVars_partnerId":"-1","campaignVars_websiteId":"0","timezone":14,"PN":"${NOM_UTILISATEUR}","PW":"${MOT_DE_PASSE}","REF":"https://empire.goodgamestudios.com","LANG":"fr","AID":"1681390746855129824","GCI":"","SID":9,"PLFID":1,"NID":1,"IC":""}%`);
+            else if (response.return_code == "10011") {
+                socket.send(`%xt%${header}%core_reg%1%{"NM": "${NOM_UTILISATEUR}", "PW": "${MOT_DE_PASSE}", "L": "fr", "AID": "1674256959939529708", "DID": 5, "PLFID": "3", "ADID": "null", "AFUID": "appsFlyerUID", "IDFV": "null"}%`);
             }
             else {
                 socket.close();
             }
         }
-        else if (response.command == "lre") {
-            if (response.return_code == "0") {
+        else if (response.command == "core_reg") {
+            if (response.return_code == "10005") {
                 ping_socket(socket, header);
             }
             else {

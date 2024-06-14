@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for empire-api on 2023-05-28T19:23:04+02:00
+# fly.toml app configuration file generated for e4k-api on 2023-05-28T19:23:04+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "empire-api"
+app = "e4k-api"
 kill_signal = "SIGINT"
 kill_timeout = 5
 primary_region = "cdg"
