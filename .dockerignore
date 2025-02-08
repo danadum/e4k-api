@@ -1,8 +1,6 @@
 fly.toml
 Dockerfile
 .dockerignore
-node_modules
 .git
-.gitignore
 .github
 README.md
